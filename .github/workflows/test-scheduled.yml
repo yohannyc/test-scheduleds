@@ -33,4 +33,4 @@ jobs:
       - name: Deploy to Firebase
         uses: docker://w9jds/firebase-action:v11.24.1
         with:
-          args: deploy --force --only functions:test-scheduled
+          args: deploy --force --only functions:test-scheduled -P ${{ env.FIREBASE_PROJECT }}
