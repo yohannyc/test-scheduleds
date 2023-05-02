@@ -25,7 +25,6 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
-          cache-dependency-path: test-scheduled/package-lock.json
       - name: Get run context
         id: run_context
         uses: actions/github-script@v6
