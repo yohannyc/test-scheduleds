@@ -1,9 +1,7 @@
-name: test-scheduled release
+name: test-scheduled functions
 
 on:
-  release:
-    types:
-      - published
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -14,18 +12,23 @@ on:
       - .firebase.json
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  build_and_deploy:
+    runs-on: macos-latest
     defaults:
       run:
         working-directory: ./functions
     steps:
-      - uses: 
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
           node-version: 18
+      - name: Get run context
+        id: run_context
+        uses: actions/github-script@v6
       - run: npm install
       - run: npm run lint
       - run: npm run build
       - name: Deploy to Firebase
         uses: docker://w9jds/firebase-action:v11.24.1
         with:
-          args: deploy --force --only functions:test-scheduled -P ${{ env.FIREBASE_PROJECT }}
+          args: deploy --force --only functions:test-scheduled -P test-scheduled
