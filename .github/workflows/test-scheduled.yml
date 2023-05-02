@@ -1,4 +1,22 @@
- - name: Create SA key
-   run: echo '${{ secrets.MY_PRIVATE_KEY }}' > $HOME/gcloud.json
- - name: Deploy Cloud Functions
-   run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase-tools deploy --only functions --json
+name: Deploy to Firebase Functions via github action
+"on":
+  push:
+    branches:
+      - main
+env:
+  CI: false
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download deps
+        working-directory: functions
+        run: npm install
+
+      - name: Deploy
+        run: npx firebase-tools deploy
+        env:
+          FIREBASE_TOKEN: ${{ secrets.MY_PRIVATE_KEY }}
