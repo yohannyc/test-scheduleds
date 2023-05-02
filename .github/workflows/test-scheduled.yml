@@ -6,7 +6,7 @@ on:
       - published
   push:
     branches:
-      - staging
+      - main
     paths:
       - functions/**
       - .github/workflows/test-scheduled.yml
