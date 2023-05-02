@@ -24,7 +24,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
       - name: Get run context
         id: run_context
         uses: actions/github-script@v6
