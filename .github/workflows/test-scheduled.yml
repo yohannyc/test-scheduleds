@@ -20,13 +20,8 @@ jobs:
       run:
         working-directory: ./functions
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
       - name: Get run context
         id: run_context
-        uses: actions/github-script@v6
       - run: npm install
       - run: npm run lint
       - run: npm run build
