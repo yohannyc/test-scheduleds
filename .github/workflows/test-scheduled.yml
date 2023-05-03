@@ -1,22 +1,28 @@
-name: Deploy to Firebase Functions via github action
-"on":
+name: Deploy Firebase Functions
+
+on:
   push:
     branches:
       - main
-env:
-  CI: false
 
 jobs:
-  build_and_deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Set up Firebase CLI
+        uses: FirebaseExtended/action-configure-firebase@v1
+        with:
+          version: 'latest'
+          project_id: ${{ secrets.FIREBASE_PROJECT_ID }}
+          token: ${{ secrets.MY_PRIVATE_KEY }}
 
-      - name: Download deps
-        working-directory: functions
+      - name: Install dependencies
         run: npm install
 
-      - name: Deploy
-        run: npx firebase-tools deploy
-        env:
-          FIREBASE_TOKEN: ${{ secrets.MY_PRIVATE_KEY }}
+      - name: Deploy to Firebase
+        uses: docker://w9jds/firebase-action:v11.24.1
+        with:
+          args: deploy --force --only functions:src -P ${{ secrets.FIREBASE_PROJECT_ID }}
+env:
+  RUNNER_TOOL_CACHE: node
+  NODE_VERSION: 14.x
