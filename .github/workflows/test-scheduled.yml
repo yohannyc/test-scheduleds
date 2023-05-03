@@ -14,8 +14,6 @@ jobs:
      - uses: actions/setup-node@v3
        with:
          node-version: 16
-     - name: Build Cloud Functions
-       run: cd functions && npm ci
      - name: Create SA key
        run: echo '${{ secrets.MY_PRIVATE_KEY }}' > $HOME/gcloud.json
      - name: Deploy to Firebase
