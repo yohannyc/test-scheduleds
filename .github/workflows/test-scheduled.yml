@@ -23,4 +23,4 @@ jobs:
      - name: Deploy Cloud Functions
        uses: docker://w9jds/firebase-action:v11.24.1
        with:
-          args: deploy --force --only functions:sheets-feeder -P ${{ env.FIREBASE_PROJECT_ID }}
+          args: deploy --force --only functions:sheets-feeder -P ${{ secrets.FIREBASE_PROJECT_ID }}
