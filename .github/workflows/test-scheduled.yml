@@ -17,12 +17,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Check Bash version
-        run: bash --version
-      - name: Install Bash
-        run: sudo apt-get update && sudo apt-get install -y bash
-      - name: List working directory contents
-        run: ls -la /home/runner/work/test-scheduleds/test-scheduleds/functions
+          bash: true
       - name: Create SA key
         run: echo "GCP_SA_KEY=${{ secrets.MY_PRIVATE_KEY }}" > $HOME/gcloud.json
       - name: Deploy to Firebase
