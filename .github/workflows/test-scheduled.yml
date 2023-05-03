@@ -9,20 +9,16 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: functions
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          bash: true
       - name: Create SA key
         run: echo "GCP_SA_KEY=${{ secrets.MY_PRIVATE_KEY }}" > $HOME/gcloud.json
       - name: Deploy to Firebase
         uses: docker://w9jds/firebase-action:v11.24.1
         with:
-          args: deploy --force --only functions:src -P ${{ secrets.FIREBASE_PROJECT_ID }}
+          args: deploy --force --only functions:test-scheduled -P ${{ secrets.FIREBASE_PROJECT_ID }}
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
