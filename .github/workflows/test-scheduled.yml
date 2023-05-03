@@ -15,7 +15,9 @@ jobs:
        with:
          node-version: 16
      - name: Create SA key
-       run: echo '${{ secrets.MY_PRIVATE_KEY }}' > $HOME/gcloud.json
+       run: echo "GCP_SA_KEY=${{ secrets.MY_PRIVATE_KEY }}" > $HOME/gcloud.json
+       env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
      - name: Deploy to Firebase
        uses: docker://w9jds/firebase-action:v11.24.1
        with:
