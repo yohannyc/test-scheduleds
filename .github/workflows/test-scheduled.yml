@@ -16,7 +16,9 @@ jobs:
           node-version: 16
       - name: Create SA key
         run: echo "GCP_SA_KEY=${{ secrets.MY_PRIVATE_KEY }}" > $HOME/gcloud.json
-      - run: npm install
+      - name: npm install
+        working-directory: ./functions
+        run: npm install
       - name: Deploy to Firebase
         uses: docker://w9jds/firebase-action:v11.24.1
         with:
