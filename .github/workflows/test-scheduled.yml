@@ -1,28 +1,28 @@
-name: Deploy Firebase Functions
-
+name: Deploy Cloud Functions
 on:
-  push:
-    branches:
-      - main
-
+ workflow_dispatch:
+ push:
+   branches:
+     - main
+   paths:
+     — 'functions/**'
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Firebase CLI
-        uses: FirebaseExtended/action-configure-firebase@v1
-        with:
-          version: 'latest'
-          project_id: ${{ secrets.FIREBASE_PROJECT_ID }}
-          token: ${{ secrets.MY_PRIVATE_KEY }}
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Deploy to Firebase
-        uses: docker://w9jds/firebase-action:v11.24.1
-        with:
-          args: deploy --force --only functions:src -P ${{ secrets.FIREBASE_PROJECT_ID }}
-env:
-  RUNNER_TOOL_CACHE: node
-  NODE_VERSION: 14.x
+ build_and_deploy:
+   runs-on: ubuntu-latest
+   steps:
+     — uses: actions/checkout@v3
+     — uses: actions/setup-node@v3
+       with:
+         node-version: 16.x
+     — uses: actions/cache@v2
+       with:
+         path: ~/.npm
+         key: ${{ runner.os }}-node-${{ hashFiles('**/functions/package-lock.json') }}
+     - name: Build Cloud Functions
+       run: cd functions && npm ci
+     — name: Create SA key
+       run: echo '${{ secrets.MY_PRIVATE_KEY }}' > $HOME/gcloud.json
+     — name: Deploy Cloud Functions
+       uses: docker://w9jds/firebase-action:v11.24.1
+       with:
+          args: deploy --force --only functions:sheets-feeder -P ${{ env.FIREBASE_PROJECT_ID }}

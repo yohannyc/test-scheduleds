@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
-const admin = require("firebase-admin");
+import * as admin from "firebase-admin";
+
 admin.initializeApp();
 
 // // Start writing functions
@@ -12,12 +13,12 @@ admin.initializeApp();
 
 export const citiesPerformance = functions
     .runWith({ timeoutSeconds: 120, failurePolicy: true })
-    .pubsub.schedule('* * * * *')
+    .pubsub.schedule('*/10  * * * *')
     .onRun(async () => {
         await citiesPerformanceFn();
     });
 
 
 const citiesPerformanceFn = async () => {
-    return 'hello world'
-}
+    return "hello world";
+};
