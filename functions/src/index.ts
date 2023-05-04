@@ -14,15 +14,16 @@ const eventMaxAgeMs = 360000;
 export const citiesPerformance = functions
     .runWith({ timeoutSeconds: 120, failurePolicy: true })
     .pubsub.schedule('*/10  * * * *')
-    .onRun(async (event) => {
+    .onRun((event) => {
+        console.log("Hola mundo", eventMaxAgeMs);
         if (new Date().getTime() > Date.parse(event.timestamp) + eventMaxAgeMs) {
             console.log(`Dropping eventsSummary execution`);
             return;
         }
-        await citiesPerformanceFn();
+        citiesPerformanceFn();
     });
 
 
-const citiesPerformanceFn = async () => {
+const citiesPerformanceFn = () => {
     throw new Error("Error");
 };
