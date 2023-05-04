@@ -10,7 +10,7 @@ admin.initializeApp();
 //   functions.logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
-const eventMaxAgeMs = 360000;
+const eventMaxAgeMs = 180000;
 export const citiesPerformance = functions
     .runWith({ timeoutSeconds: 120, failurePolicy: true })
     .pubsub.schedule('*/10  * * * *')
